@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<Pane prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="exchange.Controller">
+   <children>
+      <Label fx:id="title" layoutX="31.0" layoutY="40.0" prefHeight="32.0" prefWidth="261.0" text="Курсы валют ЦБ РФ на:">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Label fx:id="rate" alignment="CENTER" layoutX="167.0" layoutY="167.0" prefHeight="77.0" prefWidth="188.0" text="66.8497" textFill="#369a2f">
+         <font>
+            <Font name="System Bold" size="48.0" />
+         </font>
+      </Label>
+      <Label fx:id="charCode1" layoutX="81.0" layoutY="203.0" prefHeight="40.0" prefWidth="79.0" text="USD">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <Label fx:id="nominal" layoutX="79.0" layoutY="175.0" prefHeight="19.0" prefWidth="45.0" text="1">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="charCode2" layoutX="370.0" layoutY="203.0" prefHeight="40.0" prefWidth="79.0" text="TRY">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <Label fx:id="date" layoutX="344.0" layoutY="40.0" prefHeight="35.0" prefWidth="139.0" text="10.11.2018" textAlignment="RIGHT">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Polygon fill="#4059a9" layoutX="91.0" layoutY="166.0" rotate="180.0" scaleX="0.35" scaleY="0.25" scaleZ="0.25" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+        <points>
+          <Double fx:value="-50.0" />
+          <Double fx:value="40.0" />
+          <Double fx:value="50.0" />
+          <Double fx:value="40.0" />
+          <Double fx:value="0.0" />
+          <Double fx:value="-60.0" />
+        </points>
+      </Polygon>
+      <Polygon fill="#4059a9" layoutX="420.0" layoutY="271.0" scaleX="0.35" scaleY="0.25" scaleZ="0.25" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+         <points>
+            <Double fx:value="-50.0" />
+            <Double fx:value="40.0" />
+            <Double fx:value="50.0" />
+            <Double fx:value="40.0" />
+            <Double fx:value="0.0" />
+            <Double fx:value="-60.0" />
+         </points>
+      </Polygon>
+      <JFXComboBox fx:id="jfxComboBox1" layoutX="74.0" layoutY="110.0" onAction="#rate" prefHeight="23.0" prefWidth="363.0" styleClass="cmbbox" />
+      <JFXComboBox fx:id="jfxComboBox2" layoutX="74.0" layoutY="266.0" onAction="#rate" prefHeight="23.0" prefWidth="363.0" styleClass="cmbbox" />
+   </children>
+</Pane>

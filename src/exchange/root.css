@@ -1,0 +1,14 @@
+
+.cmbbox{
+    -fx-font-weight: normal;
+    -fx-font-size: 10pt;
+    -fx-font-family: System;
+}
+
+
+
+.cmbbox1{
+    -fx-font-weight: normal;
+    -fx-font-size: 10pt;
+    -fx-font-family: Helvetica, Arial, sans-serif;
+}
