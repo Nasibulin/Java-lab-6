@@ -2,13 +2,13 @@
 .cmbbox{
     -fx-font-weight: normal;
     -fx-font-size: 10pt;
-    -fx-font-family: System;
+    -fx-font-family:  Helvetica, Arial, sans-serif;;
 }
 
 
 
-.cmbbox1{
-    -fx-font-weight: normal;
-    -fx-font-size: 10pt;
+.title{
+    -fx-font-weight: bold;
+    -fx-font-size: 14pt;
     -fx-font-family: Helvetica, Arial, sans-serif;
 }
