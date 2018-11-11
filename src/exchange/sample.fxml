@@ -17,11 +17,11 @@
 
 <Pane prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="exchange.Controller">
    <children>
-      <Label fx:id="title" layoutX="31.0" layoutY="40.0" prefHeight="32.0" prefWidth="261.0" text="Курсы валют ЦБ РФ на:">
+      <Label fx:id="title" layoutX="31.0" layoutY="40.0" prefHeight="32.0" prefWidth="261.0" styleClass="title" text="Курсы валют ЦБ РФ на:">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Label fx:id="rate" alignment="CENTER" layoutX="167.0" layoutY="167.0" prefHeight="77.0" prefWidth="188.0" text="66.8497" textFill="#369a2f">
+      <Label fx:id="rate" alignment="CENTER" layoutX="167.0" layoutY="167.0" prefHeight="77.0" prefWidth="188.0" text="66.8497" textFill="#4059a9">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
@@ -41,7 +41,7 @@
             <Font name="System Bold" size="28.0" />
          </font>
       </Label>
-      <Label fx:id="date" layoutX="344.0" layoutY="40.0" prefHeight="35.0" prefWidth="139.0" text="10.11.2018" textAlignment="RIGHT">
+      <Label fx:id="date" layoutX="344.0" layoutY="40.0" prefHeight="35.0" prefWidth="139.0" styleClass="title" text="10.11.2018" textAlignment="RIGHT">
          <font>
             <Font size="24.0" />
          </font></Label>
