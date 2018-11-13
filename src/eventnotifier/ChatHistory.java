@@ -1,11 +1,26 @@
 package eventnotifier;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Nasibulin
- * Date: 13.11.18
- * Time: 16:02
- * To change this template use File | Settings | File Templates.
- */
-public class ChatHistory {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChatHistory implements Serializable {
+    private List<Message> history;
+
+    public ChatHistory() {
+        this.history = new ArrayList<Message>(Config.HISTORY_LENGTH);
+    }
+
+    public void addMessage(Message message){
+        if (this.history.size() > Config.HISTORY_LENGTH){
+            this.history.remove(0);
+        }
+
+        this.history.add(message);
+    }
+
+    public List<Message> getHistory(){
+        return this.history;
+    }
+
 }

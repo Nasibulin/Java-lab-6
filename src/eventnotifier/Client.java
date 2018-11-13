@@ -1,11 +1,41 @@
 package eventnotifier;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Nasibulin
- * Date: 13.11.18
- * Time: 14:08
- * To change this template use File | Settings | File Templates.
- */
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 public class Client {
+    private Socket socket;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+
+    public Client(Socket socket){
+        this.socket = socket;
+    }
+
+    public Client(Socket socket , ObjectOutputStream oos , ObjectInputStream ois ){
+        this.socket = socket;
+        this.oos = oos;
+        this.ois = ois;
+    }
+
+    public Socket getSocket() {
+        return this.socket;
+    }
+
+    public ObjectOutputStream getThisObjectOutputStream() {
+        return this.oos;
+    }
+
+    public ObjectInputStream getThisObjectInputStream() {
+        return this.ois;
+    }
+
+    public void setThisObjectOutputStream(ObjectOutputStream oos) {
+        this.oos = oos;
+    }
+
+    public void setThisObjectInputStream(ObjectInputStream ois) {
+        this.ois = ois;
+    }
 }
