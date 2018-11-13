@@ -1,6 +1,10 @@
 package reminder.client;
-import java.io.*;
-import java.net.*;
+
+import java.io.Console;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 /**
  * This thread is responsible for reading user's input and send it
@@ -32,13 +36,14 @@ public class WriteThread extends Thread {
 		Console console = System.console();
 
 		String userName = console.readLine("\nEnter your name: ");
-		client.setUserName(userName);
+
+        client.setUserName(userName);
 		writer.println(userName);
 
 		String text;
 
 		do {
-			text = console.readLine("[" + userName + "]: ");
+		text = console.readLine("[" + userName + "]: ");
 			writer.println(text);
 
 		} while (!text.equals("bye"));
