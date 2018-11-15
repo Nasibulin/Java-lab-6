@@ -19,7 +19,7 @@ public class ChatClient {
 		this.port = port;
 	}
 
-	public void execute() {
+	public void run() {
 		try {
 			Socket socket = new Socket(hostname, port);
 
@@ -52,6 +52,6 @@ public class ChatClient {
 		int port = Integer.parseInt(args[1]);
 
 		ChatClient client = new ChatClient(hostname, port);
-		client.execute();
+		client.run();
 	}
 }

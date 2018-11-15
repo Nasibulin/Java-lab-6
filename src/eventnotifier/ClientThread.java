@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class ClientThread extends Thread {
 
-    private final static int DELAY = 30000;
+    private final static int DELAY = 1000;
     private Socket socket;
     private Message c;
     private String login;

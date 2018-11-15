@@ -1,6 +1,11 @@
 package reminder.client;
-import java.io.*;
-import java.net.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.net.Socket;
 
 /**
  * This thread is responsible for reading server's input and printing it
@@ -21,7 +26,10 @@ public class ReadThread extends Thread {
 		try {
 			InputStream input = socket.getInputStream();
 			reader = new BufferedReader(new InputStreamReader(input));
-		} catch (IOException ex) {
+        } catch(ConnectException ex) {
+            System.out.println("Socket error: " + ex.getMessage());
+        }
+        catch (IOException ex) {
 			System.out.println("Error getting input stream: " + ex.getMessage());
 			ex.printStackTrace();
 		}
@@ -37,10 +45,14 @@ public class ReadThread extends Thread {
 				if (client.getUserName() != null) {
 					System.out.print("[" + client.getUserName() + "]: ");
 				}
-			} catch (IOException ex) {
-				System.out.println("Error reading from server: " + ex.getMessage());
-				ex.printStackTrace();
-				break;
+			} catch(ConnectException ex) {
+                System.out.println("Socket error: " + ex.getMessage());
+            }
+            catch (IOException ex) {
+//				System.out.println("Error reading from server: " + ex.getMessage());
+//				ex.printStackTrace();
+                System.out.println("Connection close");
+                break;
 			}
 		}
 	}

@@ -11,14 +11,12 @@ public class Message implements Serializable {
     private String[] users;
     private LocalDateTime time;
 
-    //Конструктор, которым будет пользоваться клиент
     public Message(String login, String message){
         this.login = login;
         this.message = message;
         this.time = LocalDateTime.now();
     }
 
-    //Конструктор, которым будет пользоваться сервер
     public Message(String login, String message, String[] users){
         this.login = login;
         this.message = message;

@@ -1,8 +1,10 @@
 package reminder.server;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is the chat server program.
@@ -19,7 +21,9 @@ public class ChatServer {
 		this.port = port;
 	}
 
-	public void execute() {
+
+
+	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 
 			System.out.println("Chat Server is listening on port " + port);
@@ -49,7 +53,7 @@ public class ChatServer {
 		int port = Integer.parseInt(args[0]);
 
 		ChatServer server = new ChatServer(port);
-		server.execute();
+		server.run();
 	}
 
 	/**
@@ -62,6 +66,15 @@ public class ChatServer {
 			}
 		}
 	}
+
+    void send(String message, UserThread includeUser) {
+        for (UserThread aUser : userThreads) {
+            if (aUser == includeUser) {
+                aUser.sendMessage(message);
+            }
+        }
+    }
+
 
 	/**
 	 * Stores username of the newly connected client.

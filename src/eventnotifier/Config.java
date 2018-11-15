@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Config {
-    private static final String PROPERTIES_FILE = "src/eventnotifier/server.properties";
+    private static final String PROPERTIES_FILE = System.getProperty("user.dir")+"/src/eventnotifier/server.properties";
 
     public static int PORT;
     public static int HISTORY_LENGTH;
