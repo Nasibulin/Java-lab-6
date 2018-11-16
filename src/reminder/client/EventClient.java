@@ -9,12 +9,12 @@ import java.io.*;
  *
  * @author www.codejava.net
  */
-public class ChatClient {
+public class EventClient {
 	private String hostname;
 	private int port;
 	private String userName;
 
-	public ChatClient(String hostname, int port) {
+	public EventClient(String hostname, int port) {
 		this.hostname = hostname;
 		this.port = port;
 	}
@@ -51,7 +51,7 @@ public class ChatClient {
 		String hostname = args[0];
 		int port = Integer.parseInt(args[1]);
 
-		ChatClient client = new ChatClient(hostname, port);
+		EventClient client = new EventClient(hostname, port);
 		client.run();
 	}
 }

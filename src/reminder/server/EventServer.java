@@ -12,12 +12,12 @@ import java.util.Set;
  *
  * @author www.codejava.net
  */
-public class ChatServer {
+public class EventServer {
 	private int port;
 	private Set<String> userNames = new HashSet<>();
 	private Set<UserThread> userThreads = new HashSet<>();
 
-	public ChatServer(int port) {
+	public EventServer(int port) {
 		this.port = port;
 	}
 
@@ -46,13 +46,13 @@ public class ChatServer {
 
 	public static void main(String[] args) {
 		if (args.length < 1) {
-			System.out.println("Syntax: java ChatServer <port-number>");
+			System.out.println("Syntax: java EventServer <port-number>");
 			System.exit(0);
 		}
 
 		int port = Integer.parseInt(args[0]);
 
-		ChatServer server = new ChatServer(port);
+		EventServer server = new EventServer(port);
 		server.run();
 	}
 
