@@ -3,35 +3,35 @@ package reminder.client;
 import java.net.*;
 import java.io.*;
 
-/**
- * This is the chat client program.
- * Type 'bye' to terminte the program.
- *
- * @author www.codejava.net
- */
-public class EventClient {
+public class EventClient implements Runnable{
 	private String hostname;
 	private int port;
-	private String userName;
+	private volatile String userName;
 
 	public EventClient(String hostname, int port) {
 		this.hostname = hostname;
 		this.port = port;
+	}
+    public EventClient(String hostname, int port, String userName) {
+		this.hostname = hostname;
+		this.port = port;
+        this.userName = userName;
 	}
 
 	public void run() {
 		try {
 			Socket socket = new Socket(hostname, port);
 
-			System.out.println("Connected to the chat server");
+			System.out.println("["+userName+"]:"+"Connected to the event server");
 
 			new ReadThread(socket, this).start();
 			new WriteThread(socket, this).start();
 
 		} catch (UnknownHostException ex) {
-			System.out.println("Server not found: " + ex.getMessage());
+			System.err.println("Server not found: " + ex.getMessage());
 		} catch (IOException ex) {
-			System.out.println("I/O Error: " + ex.getMessage());
+			System.err.println("I/O Error: " + ex.getMessage());
+			//ex.printStackTrace();
 		}
 
 	}

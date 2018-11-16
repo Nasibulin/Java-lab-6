@@ -7,31 +7,26 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.Socket;
 
-/**
- * This thread is responsible for reading server's input and printing it
- * to the console.
- * It runs in an infinite loop until the client disconnects from the server.
- *
- * @author www.codejava.net
- */
 public class ReadThread extends Thread {
 	private BufferedReader reader;
 	private Socket socket;
-	private ChatClient client;
+	private EventClient client;
+    private String userName;
 
-	public ReadThread(Socket socket, ChatClient client) {
+	public ReadThread(Socket socket, EventClient client) {
 		this.socket = socket;
 		this.client = client;
+        this.userName = client.getUserName();
 
 		try {
 			InputStream input = socket.getInputStream();
 			reader = new BufferedReader(new InputStreamReader(input));
         } catch(ConnectException ex) {
-            System.out.println("Socket error: " + ex.getMessage());
+            System.err.println("Socket error: " + ex.getMessage());
         }
         catch (IOException ex) {
-			System.out.println("Error getting input stream: " + ex.getMessage());
-			ex.printStackTrace();
+			System.err.println("Error getting input stream: " + ex.getMessage());
+			//ex.printStackTrace();
 		}
 	}
 
@@ -41,17 +36,16 @@ public class ReadThread extends Thread {
 				String response = reader.readLine();
 				System.out.println("\n" + response);
 
-				// prints the username after displaying the server's message
 				if (client.getUserName() != null) {
-					System.out.print("[" + client.getUserName() + "]: ");
+					//System.out.print("\n[" + client.getUserName() + "]: ");
 				}
 			} catch(ConnectException ex) {
-                System.out.println("Socket error: " + ex.getMessage());
+                System.err.println("Socket error: " + ex.getMessage());
             }
             catch (IOException ex) {
 //				System.out.println("Error reading from server: " + ex.getMessage());
 //				ex.printStackTrace();
-                System.out.println("Connection close");
+                System.err.println("Connection close.");
                 break;
 			}
 		}
