@@ -6,56 +6,22 @@ import java.net.Socket;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class ClientThread extends Thread {
     private Socket socket;
     private EventServer server;
     private PrintWriter writer;
-    private User user;
-    private List<Task> tasks;
+    private HashMap<Integer, User> idToUser;
     private Timer timer;
-    private static volatile int i;
-    private static int seconds = 3;
 
-    public ClientThread(Socket socket, EventServer server) {
+    public ClientThread(Socket socket, EventServer server, HashMap<Integer, User> idToUser) {
         this.socket = socket;
         this.server = server;
+        this.idToUser = idToUser;
     }
 
-    class EventTask extends TimerTask {
-        private volatile int id = i;
-        private int time;
-
-        public EventTask(int id, int time) {
-            this.id=id;
-            this.time=time;
-            i++;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id){
-            this.id = id;
-        }
-
-        @Override
-        public synchronized void run() {
-
-
-            server.send("[server]:" + LocalDateTime.now() + " ReminderTask#" + id + " is completed by Java timer",
-                    ClientThread.this);
-
-            timer.cancel();
-        }
-    }
-
-    public synchronized void run() {
+    public void run() {
         try {
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -63,34 +29,36 @@ public class ClientThread extends Thread {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            String userName = reader.readLine();
-            server.addUserName(userName);
+            int userId = Integer.parseInt(reader.readLine());
+            server.addUserId(userId);
 
-            String serverMessage = "[server]:New user connected: " + userName;
+            String serverMessage = "[server]:New user connected: " + idToUser.get(userId);
             server.send(serverMessage, this);
 
             String clientMessage;
 
             timer = new Timer();
-            for (Task t : tasks) {
-                EventTask remindTask = new EventTask(t.getTaskId(),t.getTime());
+            for (Task t : idToUser.get(userId).getTasks()) {
+                EventTask remindTask = new EventTask(t.getTaskId(), t.getTime());
                 timer.schedule(remindTask, Date.from(
                         Instant.from(LocalDateTime.now().plusSeconds(t.getTime()).atZone(ZoneId.systemDefault()))));
-                serverMessage = "[server]:" + LocalDateTime.now() + " ReminderTask#" + t.getTaskId() + " was scheduled by Java timer";
+                serverMessage = "["+idToUser.get(userId)+"]:" + LocalDateTime.now() + " " +
+                        idToUser.get(userId).toString() + " Task#" +
+                        t.getTaskId() + " " + "\"" + t.getDescription() + "\"" + " was scheduled by Java timer";
                 server.send(serverMessage, this);
             }
 
             do {
                 clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
+                serverMessage = "[" + userId + "]: " + clientMessage;
                 server.broadcast(serverMessage, this);
 
             } while (!clientMessage.equals("exit"));
 
-            server.removeUser(userName, this);
+            server.removeUser(userId, this);
             socket.close();
 
-            serverMessage = "[server]:" + userName + " was disconnected.";
+            serverMessage = "[server]:" + userId + " was disconnected.";
             server.broadcast(serverMessage, this);
 
         } catch (ConnectException ex) {
@@ -101,15 +69,32 @@ public class ClientThread extends Thread {
         }
     }
 
-    void printUsers() {
-        if (server.hasUsers()) {
-            writer.println("Connected users: " + server.getUserNames());
-        } else {
-            writer.println("No other users connected.");
-        }
-    }
-
     void sendMessage(String message) {
         writer.println(message);
+    }
+
+    class EventTask extends TimerTask {
+        private int id;
+        private int time;
+
+        public EventTask(int id, int time) {
+            this.id = id;
+            this.time = time;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public void run() {
+
+            server.send("[server]:" + LocalDateTime.now() + " Task#" + id + " is completed by Java timer",
+                    ClientThread.this);
+        }
     }
 }

@@ -7,12 +7,12 @@ public class WriteThread extends Thread {
 	private PrintWriter writer;
 	private Socket socket;
 	private EventClient client;
-    private String userName;
+    private int userId;
 
 	public WriteThread(Socket socket, EventClient client) {
 		this.socket = socket;
 		this.client = client;
-        this.userName = client.getUserName();
+        this.userId = client.getUserId();
 		try {
 			OutputStream output = socket.getOutputStream();
 			writer = new PrintWriter(output, true);
@@ -24,14 +24,14 @@ public class WriteThread extends Thread {
 
 	public void run() {
 
-        client.setUserName(userName);
-		writer.println(userName);
+        client.setUserId(userId);
+		writer.println(userId);
 
 		String text;
         try (BufferedReader inu =
                      new BufferedReader(new InputStreamReader(System.in))){
             while ((text = inu.readLine())!=null) {
-                System.out.print("\n[" + userName + "]: ");
+                System.out.print("\n[" + userId + "]: ");
                 writer.println(text);
                 if (text.equalsIgnoreCase("exit"))
                     break;

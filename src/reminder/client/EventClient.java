@@ -6,23 +6,25 @@ import java.io.*;
 public class EventClient implements Runnable{
 	private String hostname;
 	private int port;
-	private volatile String userName;
+	private int userId;
 
 	public EventClient(String hostname, int port) {
 		this.hostname = hostname;
 		this.port = port;
 	}
-    public EventClient(String hostname, int port, String userName) {
+
+
+    public EventClient(String hostname, int port, int userId) {
 		this.hostname = hostname;
 		this.port = port;
-        this.userName = userName;
+        this.userId = userId;
 	}
 
 	public void run() {
 		try {
 			Socket socket = new Socket(hostname, port);
 
-			System.out.println("["+userName+"]:"+"Connected to the event server");
+			System.out.println("["+userId+"]:"+"Connected to the event server");
 
 			new ReadThread(socket, this).start();
 			new WriteThread(socket, this).start();
@@ -36,22 +38,12 @@ public class EventClient implements Runnable{
 
 	}
 
-	void setUserName(String userName) {
-		this.userName = userName;
+	void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	String getUserName() {
-		return this.userName;
+	int getUserId() {
+		return this.userId;
 	}
 
-
-	public static void main(String[] args) {
-		if (args.length < 2) return;
-
-		String hostname = args[0];
-		int port = Integer.parseInt(args[1]);
-
-		EventClient client = new EventClient(hostname, port);
-		client.run();
-	}
 }

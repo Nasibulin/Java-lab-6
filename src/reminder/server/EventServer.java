@@ -3,16 +3,21 @@ package reminder.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class EventServer implements Runnable {
+    private static HashMap<Integer, User> idToUser = new HashMap<Integer, User>();
     private int port;
-    private Set<String> userNames = new HashSet<>();
-    private Set<UserThread> userThreads = new HashSet<>();
+    private Set<Integer> userIds = new HashSet<>();
+    private Set<ClientThread> clientThreads = new HashSet<>();
 
-    public EventServer(int port) {
+
+    public EventServer(int port, HashMap<Integer, User> idToUser) {
         this.port = port;
+        this.idToUser = idToUser;
     }
 
     public void run() {
@@ -24,9 +29,9 @@ public class EventServer implements Runnable {
                 Socket socket = serverSocket.accept();
                 System.out.println("[server]:New user connected");
 
-                UserThread newUser = new UserThread(socket, this);
-                userThreads.add(newUser);
-                newUser.start();
+                ClientThread newClient = new ClientThread(socket, this, idToUser);
+                clientThreads.add(newClient);
+                newClient.start();
 
             }
 
@@ -36,52 +41,39 @@ public class EventServer implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Syntax: java EventServer <port-number>");
-            System.exit(0);
-        }
-
-        int port = Integer.parseInt(args[0]);
-
-        EventServer server = new EventServer(port);
-        server.run();
-    }
-
-    void broadcast(String message, UserThread excludeUser) {
-        for (UserThread aUser : userThreads) {
+    void broadcast(String message, ClientThread excludeUser) {
+        for (ClientThread aUser : clientThreads) {
             if (aUser != excludeUser) {
                 aUser.sendMessage(message);
             }
         }
     }
 
-    void send(String message, UserThread includeUser) {
-        for (UserThread aUser : userThreads) {
+    void send(String message, ClientThread includeUser) {
+        for (ClientThread aUser : clientThreads) {
             if (aUser == includeUser) {
                 aUser.sendMessage(message);
             }
         }
     }
 
-
-    void addUserName(String userName) {
-        userNames.add(userName);
+    void addUserId(int userId) {
+        userIds.add(userId);
     }
 
-    void removeUser(String userName, UserThread aUser) {
-        boolean removed = userNames.remove(userName);
+    void removeUser(int userId, ClientThread aUser) {
+        boolean removed = userIds.remove(userId);
         if (removed) {
-            userThreads.remove(aUser);
-            System.out.println("[server]:The user " + userName + " was disconnected.");
+            clientThreads.remove(aUser);
+            System.out.println("[server]:The user " + userId + " was disconnected.");
         }
     }
 
-    Set<String> getUserNames() {
-        return this.userNames;
+    Set<Integer> getUserIds() {
+        return this.userIds;
     }
 
     boolean hasUsers() {
-        return !this.userNames.isEmpty();
+        return !this.userIds.isEmpty();
     }
 }

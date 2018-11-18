@@ -11,12 +11,12 @@ public class ReadThread extends Thread {
 	private BufferedReader reader;
 	private Socket socket;
 	private EventClient client;
-    private String userName;
+    private int userId;
 
 	public ReadThread(Socket socket, EventClient client) {
 		this.socket = socket;
 		this.client = client;
-        this.userName = client.getUserName();
+        this.userId = client.getUserId();
 
 		try {
 			InputStream input = socket.getInputStream();
@@ -36,7 +36,7 @@ public class ReadThread extends Thread {
 				String response = reader.readLine();
 				System.out.println("\n" + response);
 
-				if (client.getUserName() != null) {
+				if (client.getUserId() != 0) {
 					//System.out.print("\n[" + client.getUserName() + "]: ");
 				}
 			} catch(ConnectException ex) {

@@ -15,25 +15,16 @@ public class Task {
         return taskId;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String toString() {
+        return description;
     }
 
     public int getTime() {
         return time;
     }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
 
 }
