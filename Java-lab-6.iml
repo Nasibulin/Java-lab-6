@@ -7,8 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="tilesfx-1.5.2" level="project" />
+    <orderEntry type="library" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" name="jfoenix-8.0.7" level="project" />
+    <orderEntry type="library" name="tilesfx-1.5.2" level="project" />
   </component>
 </module>
 
