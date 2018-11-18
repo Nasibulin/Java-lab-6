@@ -7,38 +7,50 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class UserThread extends Thread {
+public class ClientThread extends Thread {
     private Socket socket;
     private EventServer server;
     private PrintWriter writer;
-    public Timer timer;
-    static volatile int i;
-    static int seconds = 3;
+    private User user;
+    private List<Task> tasks;
+    private Timer timer;
+    private static volatile int i;
+    private static int seconds = 3;
 
-    public UserThread(Socket socket, EventServer server) {
+    public ClientThread(Socket socket, EventServer server) {
         this.socket = socket;
         this.server = server;
     }
 
     class EventTask extends TimerTask {
-        volatile int id = i;
+        private volatile int id = i;
+        private int time;
 
-        EventTask() {
+        public EventTask(int id, int time) {
+            this.id=id;
+            this.time=time;
             i++;
         }
 
-        public int getId(){
+        public int getId() {
             return id;
+        }
+
+        public void setId(int id){
+            this.id = id;
         }
 
         @Override
         public synchronized void run() {
-            //System.out.println(LocalDateTime.now()+" ReminderTask#"+id+" is completed by Java timer");
+
+
             server.send("[server]:" + LocalDateTime.now() + " ReminderTask#" + id + " is completed by Java timer",
-                        UserThread.this);
+                    ClientThread.this);
+
             timer.cancel();
         }
     }
@@ -60,11 +72,13 @@ public class UserThread extends Thread {
             String clientMessage;
 
             timer = new Timer();
-            EventTask remindTask = new EventTask();
-            timer.schedule(remindTask, Date.from(
-                    Instant.from(LocalDateTime.now().plusSeconds(seconds).atZone(ZoneId.systemDefault()))));
-            serverMessage = "[server]:" + LocalDateTime.now() + " ReminderTask#" + remindTask.getId() + " was scheduled by Java timer";
-            server.send(serverMessage, this);
+            for (Task t : tasks) {
+                EventTask remindTask = new EventTask(t.getTaskId(),t.getTime());
+                timer.schedule(remindTask, Date.from(
+                        Instant.from(LocalDateTime.now().plusSeconds(t.getTime()).atZone(ZoneId.systemDefault()))));
+                serverMessage = "[server]:" + LocalDateTime.now() + " ReminderTask#" + t.getTaskId() + " was scheduled by Java timer";
+                server.send(serverMessage, this);
+            }
 
             do {
                 clientMessage = reader.readLine();
@@ -79,12 +93,10 @@ public class UserThread extends Thread {
             serverMessage = "[server]:" + userName + " was disconnected.";
             server.broadcast(serverMessage, this);
 
-        }
-        catch(ConnectException ex) {
+        } catch (ConnectException ex) {
             System.err.println("Socket error: " + ex.getMessage());
-        }
-        catch (IOException ex) {
-            System.err.println("Error in UserThread: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.err.println("Error in ClientThread: " + ex.getMessage());
             //ex.printStackTrace();
         }
     }
