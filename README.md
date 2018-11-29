@@ -3,7 +3,7 @@
 
 ## Задачи
 
-Описание задач находится [здесь](http://shtanyuk.tk/edu/nniit/java-new/labs/labs2.html)
+Описание задач находится [здесь](http://shtanyuk.tk/edu/nniit/java-new/labs/labs6.html)
 
 ## Алгоритм выполнения работы
 
